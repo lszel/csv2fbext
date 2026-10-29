@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d"/>
+      <stop offset="100%" stop-color="#050811"/>
+    </linearGradient>
+
+    <!-- Block Gradients -->
+    <linearGradient id="gChar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+    <linearGradient id="gInt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="gSmall" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+    <linearGradient id="gBig" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="gVar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#BE185D"/>
+    </linearGradient>
+    <linearGradient id="gDbl" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="100%" stop-color="#B91C1C"/>
+    </linearGradient>
+    <linearGradient id="gDate" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="gPad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <filter id="blockShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="1100" height="480" rx="16" fill="url(#bgGrad2)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="50" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="800" fill="#F8FAFC">
+    Firebird 5 Binary Record Memory Layout (ODS 11+ / 13.1)
+  </text>
+  <text x="50" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" fill="#94A3B8">
+    Example: 52-byte record with natural alignments (1, 2, 4, 8-byte boundaries) and zeroed padding bytes (#00)
+  </text>
+
+  <!-- Scale Ruler -->
+  <g transform="translate(50, 110)" font-family="Consolas, monospace" font-size="11" fill="#64748B">
+    <line x1="0" y1="0" x2="1000" y2="0" stroke="#334155" stroke-width="1.5"/>
+    <!-- Tick marks every 4 bytes (scale factor: 1 byte = 19.23 pixels) -->
+    <!-- 0 -->  <line x1="0" y1="-6" x2="0" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="0" y="-12" text-anchor="middle">0B</text>
+    <!-- 8 -->  <line x1="154" y1="-6" x2="154" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="154" y="-12" text-anchor="middle">8B</text>
+    <!-- 16 --> <line x1="308" y1="-6" x2="308" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="308" y="-12" text-anchor="middle">16B</text>
+    <!-- 24 --> <line x1="462" y1="-6" x2="462" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="462" y="-12" text-anchor="middle">24B</text>
+    <!-- 36 --> <line x1="692" y1="-6" x2="692" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="692" y="-12" text-anchor="middle">36B</text>
+    <!-- 40 --> <line x1="769" y1="-6" x2="769" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="769" y="-12" text-anchor="middle">40B</text>
+    <!-- 48 --> <line x1="923" y1="-6" x2="923" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="923" y="-12" text-anchor="middle">48B</text>
+    <!-- 52 --> <line x1="1000" y1="-6" x2="1000" y2="6" stroke="#94A3B8" stroke-width="1.5"/><text x="1000" y="-12" text-anchor="middle">52B</text>
+  </g>
+
+  <!-- Memory Blocks (Row 1: Visualization) -->
+  <g transform="translate(50, 130)" filter="url(#blockShadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <!-- CHAR(5): 0..4 (width: 96) -->
+    <rect x="0" y="0" width="96" height="70" rx="4" fill="url(#gChar)"/>
+    <text x="48" y="32">CHAR(5)</text>
+    <text x="48" y="50" font-size="9.5" opacity="0.8">5 Bytes</text>
+
+    <!-- Pad 3B: 5..7 (width: 58) -->
+    <rect x="96" y="0" width="58" height="70" rx="4" fill="url(#gPad)" stroke="#475569" stroke-dasharray="3,3"/>
+    <text x="125" y="32" fill="#94A3B8">PAD</text>
+    <text x="125" y="50" font-size="9.5" fill="#64748B">3B (#00)</text>
+
+    <!-- INTEGER: 8..11 (width: 77) -->
+    <rect x="154" y="0" width="77" height="70" rx="4" fill="url(#gInt)"/>
+    <text x="192" y="32">INTEGER</text>
+    <text x="192" y="50" font-size="9.5" opacity="0.8">4 Bytes</text>
+
+    <!-- SMALLINT: 12..13 (width: 38) -->
+    <rect x="231" y="0" width="38" height="70" rx="4" fill="url(#gSmall)"/>
+    <text x="250" y="32">S-INT</text>
+    <text x="250" y="50" font-size="9" opacity="0.8">2 B</text>
+
+    <!-- Pad 2B: 14..15 (width: 39) -->
+    <rect x="269" y="0" width="39" height="70" rx="4" fill="url(#gPad)" stroke="#475569" stroke-dasharray="3,3"/>
+    <text x="288" y="32" fill="#94A3B8">PAD</text>
+    <text x="288" y="50" font-size="9" fill="#64748B">2B</text>
+
+    <!-- BIGINT: 16..23 (width: 154) -->
+    <rect x="308" y="0" width="154" height="70" rx="4" fill="url(#gBig)"/>
+    <text x="385" y="32">BIGINT / INT64</text>
+    <text x="385" y="50" font-size="9.5" opacity="0.8">8 Bytes (Aligned to 8)</text>
+
+    <!-- VARCHAR(10): 24..35 (width: 230) -->
+    <rect x="462" y="0" width="230" height="70" rx="4" fill="url(#gVar)"/>
+    <text x="577" y="32">VARCHAR(10)</text>
+    <text x="577" y="50" font-size="9.5" opacity="0.8">2B Len + 10B Text (12 Bytes)</text>
+
+    <!-- Pad 4B: 36..39 (width: 77) -->
+    <rect x="692" y="0" width="77" height="70" rx="4" fill="url(#gPad)" stroke="#475569" stroke-dasharray="3,3"/>
+    <text x="730" y="32" fill="#94A3B8">PAD</text>
+    <text x="730" y="50" font-size="9.5" fill="#64748B">4B (#00)</text>
+
+    <!-- DOUBLE: 40..47 (width: 154) -->
+    <rect x="769" y="0" width="154" height="70" rx="4" fill="url(#gDbl)"/>
+    <text x="846" y="32">DOUBLE PRECISION</text>
+    <text x="846" y="50" font-size="9.5" opacity="0.8">8 Bytes (Aligned to 8)</text>
+
+    <!-- DATE: 48..51 (width: 77) -->
+    <rect x="923" y="0" width="77" height="70" rx="4" fill="url(#gDate)"/>
+    <text x="961" y="32">DATE</text>
+    <text x="961" y="50" font-size="9.5" opacity="0.8">4 Bytes</text>
+  </g>
+
+  <!-- Detailed Legend / Explanation Cards -->
+  <g transform="translate(50, 230)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <!-- Card 1: Natural Alignment Rules -->
+    <g transform="translate(0, 0)">
+      <rect width="310" height="210" rx="10" fill="#111827" stroke="#1f2937" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="700" fill="#38BDF8">NATURAL ALIGNMENT RULES</text>
+      <text x="18" y="54" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">CHAR</tspan>: 1-byte boundary (never padded)</text>
+      <text x="18" y="76" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">VARCHAR</tspan>: 2-byte boundary (for USHORT len)</text>
+      <text x="18" y="98" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">SMALLINT</tspan>: 2-byte boundary</text>
+      <text x="18" y="120" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">INTEGER / DATE / TIME</tspan>: 4-byte boundary</text>
+      <text x="18" y="142" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">BIGINT / DOUBLE / TS</tspan>: 8-byte boundary</text>
+      <text x="18" y="174" font-size="11" fill="#94A3B8">Implemented via Firebird's <tspan font-family="Consolas">MET_align</tspan></text>
+      <text x="18" y="192" font-size="11" fill="#94A3B8"><tspan font-family="Consolas">Alignment = Min(Size, 8)</tspan></text>
+    </g>
+
+    <!-- Card 2: Date & Time Encoding -->
+    <g transform="translate(340, 0)">
+      <rect width="320" height="210" rx="10" fill="#111827" stroke="#1f2937" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="700" fill="#FBBF24">DATE &amp; TIME ENCODING</text>
+      <text x="18" y="54" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">DATE (ISC_DATE)</tspan>: 4-byte Signed Int</text>
+      <text x="32" y="72" font-size="11" font-family="Consolas" fill="#F59E0B">Days since 1858-11-17 (MJD)</text>
+      <text x="18" y="96" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">TIME (ISC_TIME)</tspan>: 4-byte Unsigned Int</text>
+      <text x="32" y="114" font-size="11" font-family="Consolas" fill="#F59E0B">10,000 ticks / sec (0.1ms unit)</text>
+      <text x="18" y="138" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">TIMESTAMP (ISC_TIMESTAMP)</tspan>: 8 Bytes</text>
+      <text x="32" y="156" font-size="11" font-family="Consolas" fill="#F59E0B">Packed: [ISC_DATE, ISC_TIME]</text>
+      <text x="18" y="186" font-size="11" fill="#94A3B8">Fully reversible &amp; microsecond-accurate</text>
+    </g>
+
+    <!-- Card 3: Numeric & Strings -->
+    <g transform="translate(690, 0)">
+      <rect width="310" height="210" rx="10" fill="#111827" stroke="#1f2937" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="700" fill="#34D399">NUMERIC &amp; STRING HANDLING</text>
+      <text x="18" y="54" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">NUMERIC(P, S)</tspan>: Stored as scaled integer</text>
+      <text x="32" y="72" font-size="11" font-family="Consolas" fill="#10B981">P &lt;= 4: 2B | P &lt;= 9: 4B | Else: 8B</text>
+      <text x="18" y="96" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">CHAR</tspan>: Padded with spaces (#32)</text>
+      <text x="18" y="118" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">VARCHAR</tspan>: [Lo, Hi] length + text payload</text>
+      <text x="18" y="140" font-size="11.5" fill="#CBD5E1">&#8226; <tspan font-weight="700">BOOLEAN</tspan>: 1 Byte (#00 = False, #01 = True)</text>
+      <text x="18" y="172" font-size="11" fill="#94A3B8">&#8226; Optional trailing CRLF (#13#10) for</text>
+      <text x="28" y="188" font-size="11" fill="#94A3B8">compatibility with text inspection tools</text>
+    </g>
+  </g>
+</svg>

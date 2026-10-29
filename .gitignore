@@ -1,0 +1,27 @@
+# Delphi compiler outputs
+*.dcu
+*.o
+*.obj
+*.exe
+*.dll
+*.bpl
+*.dcp
+*.so
+*.dylib
+
+# Delphi temporary and configuration files
+*.identcache
+*.local
+*.stat
+*.tvsconfig
+*.dproj.local
+*.~*
+__history/
+__recovery/
+
+# Output directories
+bin/
+dcu/
+Win32/
+Win64/
+Linux64/
